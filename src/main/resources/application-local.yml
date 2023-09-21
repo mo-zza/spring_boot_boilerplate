@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  profiles:
+    active: local
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;
+    username: SA
+    password:
+    initialization-mode: always
+  security:
+    user:
+      name: user
+      password: password
+
+config:
+  jwt:
+    secret: plzgivemesomepizzaandcoffee
+    access-token-validity-hours: 5
+    refresh-token-validity-hours: 24
