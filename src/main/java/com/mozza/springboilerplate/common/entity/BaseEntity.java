@@ -17,14 +17,14 @@ public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id", length = 36, nullable = false, updatable = false, unique = true, columnDefinition = "gen_random_uuid()")
+    @Column(name = "id", length = 36, nullable = false, updatable = false, unique = true)
     private UUID id;
 
     @CreatedDate
-    @Column(updatable = false, columnDefinition = "now()")
+    @Column(updatable = false)
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(columnDefinition = "now()")
+    @Column
     private LocalDateTime modifiedDate;
 }

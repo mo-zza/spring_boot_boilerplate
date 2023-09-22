@@ -1,6 +1,7 @@
 package com.mozza.springboilerplate.auth.jwt;
 
 import com.mozza.springboilerplate.auth.constant.MemberRole;
+import com.mozza.springboilerplate.auth.dto.TokenResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.http.HttpStatus;
@@ -20,37 +21,38 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     protected final String secret;
 
-    protected final int tokenValidityInHours;
+    protected final int accessTokenValidityInHours;
+
+    protected  final int refreshTokenValidityInHours;
     private final Key key;
 
     public JwtTokenProvider(
             String secret,
-            int accessTokenValidityInHours
+            int accessTokenValidityInHours,
+            int refreshTokenValidityInHours
     ) {
         this.secret = secret;
-        this.tokenValidityInHours = accessTokenValidityInHours;
+        this.accessTokenValidityInHours = accessTokenValidityInHours;
+        this.refreshTokenValidityInHours = refreshTokenValidityInHours;
 
         byte[] keyBytes = Base64.getEncoder().encode(this.secret.getBytes(StandardCharsets.UTF_8));
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(UUID memberId, MemberRole role) {
+    public TokenResponse createToken(UUID memberId, MemberRole role) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(memberId, null,
                 Collections.singleton(new SimpleGrantedAuthority(role.name())));
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, this.tokenValidityInHours);
-        Date validity = cal.getTime();
+        Date accessTokenValidity = getValidity(accessTokenValidityInHours);
+        Date refreshTokenValidity = getValidity(refreshTokenValidityInHours);
 
-        return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AuthConstant.AUTHORITIES_KEY, authorities)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .setExpiration(validity)
-                .compact();
+        String accessToken = getToken(authentication, authorities, accessTokenValidity);
+        String refreshToken = getToken(authentication, authorities, refreshTokenValidity);
+
+        return TokenResponse.from(accessToken, refreshToken);
     }
 
     public Authentication getAuthentication(String token) {
@@ -83,5 +85,20 @@ public class JwtTokenProvider {
                  IllegalArgumentException e) {
             throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Token is invalid.");
         }
+    }
+
+    private String getToken(Authentication authentication, String authorities, Date validity) {
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AuthConstant.AUTHORITIES_KEY, authorities)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(validity)
+                .compact();
+    }
+
+    private Date getValidity(int validityInHours) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, validityInHours);
+        return cal.getTime();
     }
 }

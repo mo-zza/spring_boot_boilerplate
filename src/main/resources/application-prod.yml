@@ -5,6 +5,8 @@ server:
 
 spring:
   jpa:
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -21,5 +23,5 @@ spring:
 config:
   jwt:
     secret: ${JWT_SECRET}
-    access-token-validity-hours: ${JWT_ACCESS_TOKEN_VALIDITY_HOURS}
-    refresh-token-validity-hours: ${JWT_REFRESH_TOKEN_VALIDITY_HOURS}
+    access-token-validity-in-hours: ${JWT_ACCESS_TOKEN_VALIDITY_HOURS}
+    refresh-token-validity-in-hours: ${JWT_REFRESH_TOKEN_VALIDITY_HOURS}

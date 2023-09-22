@@ -2,21 +2,18 @@ package com.mozza.springboilerplate.domain.member.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.mozza.springboilerplate.domain.member.entity.Member;
-import com.mozza.springboilerplate.domain.payment.entity.Payment;
-import com.querydsl.core.annotations.QueryProjection;
+import com.mozza.springboilerplate.domain.payment.dto.PaymentResponse;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
-@NoArgsConstructor
-@Accessors(chain = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@Accessors(chain = true)
 public class MemberResponse {
     private UUID id;
 
@@ -26,33 +23,22 @@ public class MemberResponse {
 
     private String phoneNumber;
 
-    private Set<Payment> payments;
+    private List<PaymentResponse> payments;
 
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
 
-    @QueryProjection
-    public MemberResponse(UUID id, String name, String email,
-                          String phoneNumber, Set<Payment> payments, LocalDateTime createdDate,
-                          LocalDateTime modifiedDate) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.payments = payments;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
-    }
-
-    public static MemberResponse fromEntity(Member entity) {
+    public static MemberResponse fromResult(MemberResult output) {
         return new MemberResponse()
-                .setId(entity.getId())
-                .setName(entity.getName())
-                .setEmail(entity.getEmail())
-                .setPhoneNumber(entity.getPhoneNumber())
-                .setPayments(entity.getPayments())
-                .setCreatedDate(entity.getCreatedDate())
-                .setModifiedDate(entity.getModifiedDate());
+                .setId(output.getId())
+                .setName(output.getName())
+                .setEmail(output.getEmail())
+                .setPhoneNumber(output.getPhoneNumber())
+                .setPayments(output.getPayments().stream()
+                        .map(PaymentResponse::fromEntity)
+                        .collect(Collectors.toList()))
+                .setCreatedDate(output.getCreatedDate())
+                .setModifiedDate(output.getModifiedDate());
     }
 }

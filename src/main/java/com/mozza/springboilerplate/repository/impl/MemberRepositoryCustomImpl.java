@@ -1,8 +1,9 @@
 package com.mozza.springboilerplate.repository.impl;
 
 import com.mozza.springboilerplate.domain.member.dto.MemberCond;
-import com.mozza.springboilerplate.domain.member.dto.MemberResponse;
-import com.mozza.springboilerplate.domain.member.dto.QMemberResponse;
+import com.mozza.springboilerplate.domain.member.dto.MemberResult;
+import com.mozza.springboilerplate.domain.member.dto.QMemberResult;
+import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.domain.payment.constant.PaymentMethod;
 import com.mozza.springboilerplate.domain.payment.entity.QPayment;
 import com.mozza.springboilerplate.repository.MemberRepositoryCustom;
@@ -20,33 +21,26 @@ import java.util.UUID;
 import static com.mozza.springboilerplate.domain.member.entity.QMember.member;
 
 @RequiredArgsConstructor
-public class MemberRepositoryImpl implements MemberRepositoryCustom {
+public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory query;
 
     @Override
-    public MemberResponse findOneByEmail(String email) {
-        return getMemberQueryWithJoin()
+    public Member findOneByEmail(String email) {
+        return getMemberQuery()
                 .where(member.email.eq(email))
                 .fetchOne();
     }
 
     @Override
-    public MemberResponse findOneByPhoneNumber(String phoneNumber) {
-        return getMemberQueryWithJoin()
-                .where(member.phoneNumber.eq(phoneNumber))
-                .fetchOne();
-    }
-
-    @Override
-    public MemberResponse findOneById(UUID id) {
-        return getMemberQueryWithJoin()
+    public Member findOneById(UUID id) {
+        return getMemberQuery()
                 .where(member.id.eq(id))
                 .fetchOne();
     }
 
     @Override
-    public Page<MemberResponse> findAll(MemberCond cond) {
-        List<MemberResponse> content = getMemberQueryWithJoin()
+    public Page<MemberResult> findAll(MemberCond cond) {
+        List<MemberResult> content = getMemberQueryWithDto()
                 .where(nameContains(cond.getName()),
                         emailContains(cond.getEmail()),
                         phoneNumberContains(cond.getPhoneNumber()),
@@ -64,17 +58,25 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return new PageImpl<>(content, PageRequest.of(cond.getPage(), cond.getSize()), count);
     }
 
-    private JPAQuery<MemberResponse> getMemberQueryWithJoin() {
-        return query.select(new QMemberResponse(
+    private JPAQuery<MemberResult> getMemberQueryWithDto() {
+        return query.select(new QMemberResult(
                         member.id,
                         member.name,
+                        member.role,
                         member.email,
                         member.phoneNumber,
                         member.payments,
+                        member.encryptedPassword,
+                        member.salt,
                         member.createdDate,
                         member.modifiedDate
                 ))
                 .from(member)
+                .leftJoin(member.payments);
+    }
+
+    private JPAQuery<Member> getMemberQuery() {
+        return query.selectFrom(member)
                 .leftJoin(member.payments);
     }
 

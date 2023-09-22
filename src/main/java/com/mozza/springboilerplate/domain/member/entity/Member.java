@@ -24,7 +24,7 @@ public class Member extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "varchar(255) default 'USER'")
+    @Column(nullable = false)
     private MemberRole role;
 
     @Column(unique = true, nullable = false)

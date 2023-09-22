@@ -14,13 +14,14 @@ import lombok.*;
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Payment extends BaseEntity {
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentMethod method;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String cardNumber;
 
-    @Column(nullable = false)
+    @Column
     private String cardExpirationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,11 +29,9 @@ public class Payment extends BaseEntity {
     private Member member;
 
     @Builder
-    public Payment(@NonNull PaymentMethod method, @NonNull String cardNumber, @NonNull String cardExpirationDate,
-                   @NonNull Member member) {
+    public Payment(@NonNull PaymentMethod method, String cardNumber, String cardExpirationDate) {
         this.method = method;
         this.cardNumber = cardNumber;
         this.cardExpirationDate = cardExpirationDate;
-        this.member = member;
     }
 }

@@ -14,3 +14,9 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Profile("local")
 public class TimeTraceAop {
 
-    @Around(value = "execution(* com.mozza.springboilerplate..*(..)) || execution(* com.mozza.springboilerplate.persistence..*(..)) || execution(* com.mozza.springboilerplate.controller..*(..))")
+    @Around(value = "execution(* com.mozza.springboilerplate.service..*(..)) || execution(* com.mozza.springboilerplate.repository..*(..)) || execution(* com.mozza.springboilerplate.controller..*(..))")
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         System.out.println("START: " + joinPoint.toString());

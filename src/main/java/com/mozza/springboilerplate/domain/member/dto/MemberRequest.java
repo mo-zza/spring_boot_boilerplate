@@ -7,7 +7,9 @@ import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.shared.annotation.PhoneNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
 
+@Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberRequest {
     @NotEmpty(message = "name is required")
@@ -23,16 +25,6 @@ public class MemberRequest {
 
     @NotEmpty(message = "password is required")
     private String password;
-
-    public Member toUserRoleEntity() {
-        return Member.builder()
-                .name(name)
-                .role(MemberRole.USER)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .password(password)
-                .build();
-    }
 
     public Member toEntityWithRole(MemberRole role) {
         return Member.builder()

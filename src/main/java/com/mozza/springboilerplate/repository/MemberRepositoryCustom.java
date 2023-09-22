@@ -1,17 +1,16 @@
 package com.mozza.springboilerplate.repository;
 
 import com.mozza.springboilerplate.domain.member.dto.MemberCond;
-import com.mozza.springboilerplate.domain.member.dto.MemberResponse;
+import com.mozza.springboilerplate.domain.member.dto.MemberResult;
+import com.mozza.springboilerplate.domain.member.entity.Member;
 import org.springframework.data.domain.Page;
 
 import java.util.UUID;
 
 public interface MemberRepositoryCustom {
-    MemberResponse findOneByEmail(String email);
+    Member findOneByEmail(String email);
 
-    MemberResponse findOneByPhoneNumber(String phoneNumber);
+    Member findOneById(UUID id);
 
-    MemberResponse findOneById(UUID id);
-
-    Page<MemberResponse> findAll(MemberCond cond);
+    Page<MemberResult> findAll(MemberCond cond);
 }

@@ -13,7 +13,7 @@ public class JwtConfig {
     private String secret;
 
     @Getter
-    @Value("${config.jwt.access-token-validity-hours}")
+    @Value("${config.jwt.access-token-validity-in-hours}")
     private int accessTokenValidityInHours;
 
     @Getter
@@ -22,6 +22,6 @@ public class JwtConfig {
 
     @Bean(name = "tokenProvider")
     public JwtTokenProvider tokenProvider() {
-        return new JwtTokenProvider(this.secret, this.accessTokenValidityInHours);
+        return new JwtTokenProvider(this.secret, this.accessTokenValidityInHours, this.refreshTokenValidityInHours);
     }
 }

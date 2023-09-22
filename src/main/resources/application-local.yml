@@ -4,6 +4,15 @@ server:
     active: local
 
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        highlight: true
+        format_sql: true
+    open-in-view: false
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb;MODE=PostgreSQL;
@@ -18,5 +27,5 @@ spring:
 config:
   jwt:
     secret: plzgivemesomepizzaandcoffee
-    access-token-validity-hours: 5
-    refresh-token-validity-hours: 24
+    access-token-validity-in-hours: 24
+    refresh-token-validity-in-hours: 48
