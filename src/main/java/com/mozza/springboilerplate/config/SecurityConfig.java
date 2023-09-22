@@ -23,9 +23,9 @@ public class SecurityConfig {
 
     public SecurityConfig(
             JwtTokenProvider tokenProvider, CorsFilter corsFilter, Environment env,
-            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+            JwtAccessDeniedHandler jwtAccessDeniedHandler) {
         this.securityFilter = new SecurityFilter(env.getProperty("spring.profiles.active"),
-                corsFilter, jwtAuthenticationEntryPoint, jwtAccessDeniedHandler);
+                corsFilter, jwtAccessDeniedHandler);
         this.tokenProvider = tokenProvider;
     }
 

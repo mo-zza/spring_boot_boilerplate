@@ -16,15 +16,11 @@ public class SecurityFilter {
 
     private final CorsFilter corsFilter;
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    public SecurityFilter(String profile, CorsFilter corsFilter,
-                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+    public SecurityFilter(String profile, CorsFilter corsFilter, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
         this.profile = profile;
         this.corsFilter = corsFilter;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
     }
 
@@ -40,7 +36,7 @@ public class SecurityFilter {
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .headers(headers -> headers.disable())
+                .headers(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -53,7 +49,6 @@ public class SecurityFilter {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
@@ -62,7 +57,6 @@ public class SecurityFilter {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .exceptionHandling(handler -> handler
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
                 .build();
     }

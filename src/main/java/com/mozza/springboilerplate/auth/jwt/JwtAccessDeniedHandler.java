@@ -14,10 +14,19 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
-                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
+                       AccessDeniedException accessDeniedException) throws IOException {
+        String message = """
+                {
+                    "status": 403,
+                    "divisionCode": "G007",
+                    "message": "Forbidden",
+                    "errors": null,
+                    "reason": "403 권한이 없습니다."
+                }
+                """;
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType("application/json");
-        response.getWriter().write("{\"status\": 403, \"divisionCode\": \"G007\", \"message\": \"Forbidden\", \"errors\": null, \"reason\": \"403 권한이 없습니다.}");
+        response.getWriter().write(message);
         response.getWriter().flush();
         response.getWriter().close();
     }
