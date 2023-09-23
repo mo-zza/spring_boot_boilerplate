@@ -29,8 +29,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     @Override
     public UUID createWithRole(MemberRequest param, MemberRole role) {
         Member member = param.toEntityWithRole(MemberRole.USER);
-        memberRepository.save(member);
-        return member.getId();
+        Member savedMember = memberRepository.save(member);
+        return savedMember.getId();
     }
 
     @Override
