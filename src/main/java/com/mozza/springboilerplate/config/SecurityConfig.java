@@ -1,7 +1,6 @@
 package com.mozza.springboilerplate.config;
 
 import com.mozza.springboilerplate.auth.jwt.JwtAccessDeniedHandler;
-import com.mozza.springboilerplate.auth.jwt.JwtAuthenticationEntryPoint;
 import com.mozza.springboilerplate.auth.jwt.JwtSecurityConfig;
 import com.mozza.springboilerplate.auth.jwt.JwtTokenProvider;
 import com.mozza.springboilerplate.auth.security.SecurityFilter;

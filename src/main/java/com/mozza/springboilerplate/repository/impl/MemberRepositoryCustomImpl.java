@@ -70,7 +70,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
                         member.salt,
                         member.createdDate,
                         member.modifiedDate
-                ))
+                )).distinct()
                 .from(member)
                 .leftJoin(member.payments);
     }

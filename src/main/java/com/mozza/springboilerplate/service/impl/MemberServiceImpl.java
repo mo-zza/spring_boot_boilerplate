@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private void assertPaymentAuthorityByMemberId(PaymentResult payment, UUID memberId) {
-        if (!payment.getMemberId().equals(memberId)) {
+        if (!payment.getMember().getId().equals(memberId)) {
             throw new UnauthorizedPaymentException("결제 수단에 대한 권한이 없습니다.");
         }
     }

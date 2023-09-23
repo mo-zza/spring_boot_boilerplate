@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        highlight: true
+        format_sql: true
+    database: h2
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;
+    username: SA
+    password:
+    initialization-mode: always

@@ -28,7 +28,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     public UUID createWithRole(MemberRequest param, MemberRole role) {
-        Member member = memberRepository.save(param.toEntityWithRole(MemberRole.USER));
+        Member member = param.toEntityWithRole(MemberRole.USER);
+        memberRepository.save(member);
         return member.getId();
     }
 
@@ -44,7 +45,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
             throw new AlreadyExistException("이미 존재하는 카드번호입니다.");
         }
 
-        memberRepository.save(member.addPayment(param.toEntity()));
+        memberRepository.save(member.addPayment(param.toEntity(member)));
     }
 
     @Override

@@ -29,9 +29,10 @@ public class Payment extends BaseEntity {
     private Member member;
 
     @Builder
-    public Payment(@NonNull PaymentMethod method, String cardNumber, String cardExpirationDate) {
+    public Payment(@NonNull PaymentMethod method, @NonNull Member member, String cardNumber, String cardExpirationDate) {
         this.method = method;
         this.cardNumber = cardNumber;
         this.cardExpirationDate = cardExpirationDate;
+        this.member = member;
     }
 }

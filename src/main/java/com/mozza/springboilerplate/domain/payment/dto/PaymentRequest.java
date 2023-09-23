@@ -2,6 +2,7 @@ package com.mozza.springboilerplate.domain.payment.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.domain.payment.constant.PaymentMethod;
 import com.mozza.springboilerplate.domain.payment.entity.Payment;
 import jakarta.validation.constraints.NotNull;
@@ -19,11 +20,12 @@ public class PaymentRequest {
     @DateTimeFormat(pattern = "MM/yy")
     private String cardExpirationDate;
 
-    public Payment toEntity() {
+    public Payment toEntity(Member member) {
         return Payment.builder()
                 .method(method)
                 .cardNumber(cardNumber)
                 .cardExpirationDate(cardExpirationDate)
+                .member(member)
                 .build();
     }
 }

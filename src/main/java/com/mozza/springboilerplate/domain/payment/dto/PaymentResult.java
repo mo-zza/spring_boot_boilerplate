@@ -2,6 +2,7 @@ package com.mozza.springboilerplate.domain.payment.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.domain.payment.constant.PaymentMethod;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.UUID;
 public class PaymentResult {
     private UUID id;
 
-    private UUID memberId;
+    private Member member;
 
     private PaymentMethod method;
 
@@ -27,11 +28,11 @@ public class PaymentResult {
     private LocalDateTime modifiedDate;
 
     @QueryProjection
-    public PaymentResult(UUID id, UUID memberId,PaymentMethod method,
+    public PaymentResult(UUID id, Member member, PaymentMethod method,
                          String cardNumber, String cardExpirationDate, LocalDateTime createdDate,
                          LocalDateTime modifiedDate) {
         this.id = id;
-        this.memberId = memberId;
+        this.member = member;
         this.method = method;
         this.cardNumber = cardNumber;
         this.cardExpirationDate = cardExpirationDate;

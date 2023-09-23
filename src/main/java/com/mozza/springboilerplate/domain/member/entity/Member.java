@@ -39,7 +39,7 @@ public class Member extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String encryptedPassword;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     private Set<Payment> payments = new HashSet<>();
 
     @Builder

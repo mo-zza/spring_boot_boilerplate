@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
         validateMemberNotExist(param.getEmail());
 
         UUID id = memberCommandService.createWithRole(param, MemberRole.USER);
-        return getResponseByMemberId(id);
+        return getResponseByMemberId(id, MemberRole.USER);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         assertCreateAdminAuthorityByMemberId(requestedMemberId);
 
         UUID id = memberCommandService.createWithRole(param, MemberRole.ADMIN);
-        return getResponseByMemberId(id);
+        return getResponseByMemberId(id, MemberRole.ADMIN);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         assertCreateDevAuthorityByMemberId(requestedMember);
 
         UUID id = memberCommandService.createWithRole(param, MemberRole.DEV);
-        return getResponseByMemberId(id);
+        return getResponseByMemberId(id, MemberRole.DEV);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
 
         memberCommandService.validatePasswordByMemberId(param.getPassword(), member.getId());
 
-        return getResponseByMemberId(member.getId());
+        return getResponseByMemberId(member.getId(), member.getRole());
     }
 
     private void validateMemberNotExist(String email) {
@@ -72,9 +72,8 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    private TokenResponse getResponseByMemberId(UUID memberId) {
-        MemberResult result = memberQueryService.getById(memberId);
-        return jwtTokenProvider.createToken(result.getId(), result.getRole());
+    private TokenResponse getResponseByMemberId(UUID memberId, MemberRole role) {
+        return jwtTokenProvider.createToken(memberId, role);
     }
 
     private void assertCreateDevAuthorityByMemberId(UUID memberId) {

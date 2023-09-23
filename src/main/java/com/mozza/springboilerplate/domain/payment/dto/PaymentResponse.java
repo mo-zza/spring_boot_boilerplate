@@ -2,6 +2,7 @@ package com.mozza.springboilerplate.domain.payment.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.mozza.springboilerplate.domain.payment.constant.PaymentMethod;
 import com.mozza.springboilerplate.domain.payment.entity.Payment;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class PaymentResponse {
     private UUID id;
 
-    private com.mozza.springboilerplate.domain.payment.constant.PaymentMethod method;
+    private PaymentMethod method;
 
     private String cardNumber;
 

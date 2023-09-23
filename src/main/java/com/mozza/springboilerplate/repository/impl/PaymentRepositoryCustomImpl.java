@@ -1,5 +1,6 @@
 package com.mozza.springboilerplate.repository.impl;
 
+import com.mozza.springboilerplate.domain.member.entity.QMember;
 import com.mozza.springboilerplate.domain.payment.dto.PaymentResult;
 import com.mozza.springboilerplate.domain.payment.dto.QPaymentResult;
 import com.mozza.springboilerplate.domain.payment.entity.Payment;
@@ -49,7 +50,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
     private JPAQuery<PaymentResult> getPaymentQueryWithDto() {
         return query.select(new QPaymentResult(
                         payment.id,
-                        payment.member.id,
+                        payment.member,
                         payment.method,
                         payment.cardNumber,
                         payment.cardExpirationDate,
@@ -57,7 +58,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
                         payment.modifiedDate
                 ))
                 .from(payment)
-                .leftJoin(payment.member).fetchJoin();
+                .innerJoin(QMember.member).fetchJoin();
     }
 
     private JPAQuery<Payment> getPaymentQuery() {
