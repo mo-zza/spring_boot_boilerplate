@@ -58,7 +58,7 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
                         payment.modifiedDate
                 ))
                 .from(payment)
-                .innerJoin(payment.member, QMember.member).fetchJoin();
+                .innerJoin(payment.member, QMember.member);
     }
 
     private JPAQuery<Payment> getPaymentQuery() {
