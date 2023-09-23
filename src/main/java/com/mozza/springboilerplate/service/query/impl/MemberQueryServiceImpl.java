@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -20,18 +21,27 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     @Override
     public MemberResult getByEmail(String email) {
         Member member = memberRepository.findOneByEmail(email);
+        if (Objects.isNull(member)) {
+            return null;
+        }
         return MemberResult.fromEntity(member);
     }
 
     @Override
     public MemberResult getById(UUID id) {
         Member member =  memberRepository.findOneById(id);
+        if (Objects.isNull(member)) {
+            return null;
+        }
         return MemberResult.fromEntity(member);
     }
 
     @Override
     public MemberRole getRole(UUID id) {
         Member member = memberRepository.findOneById(id);
+        if (Objects.isNull(member)) {
+            return null;
+        }
         return member.getRole();
     }
 }
