@@ -64,7 +64,7 @@ public class PaymentRepositoryImplTest {
             UUID id = payment.getId();
 
             // when
-            PaymentResult payment = paymentRepository.findOneById(id);
+            Payment payment = paymentRepository.findOneById(id);
 
             // then
             Assertions.assertEquals(payment.getId(), id);
@@ -76,7 +76,7 @@ public class PaymentRepositoryImplTest {
             UUID id = UUID.randomUUID();
 
             // when
-            PaymentResult payment = paymentRepository.findOneById(id);
+            Payment payment = paymentRepository.findOneById(id);
 
             // then
             Assertions.assertNull(payment);
@@ -119,7 +119,7 @@ public class PaymentRepositoryImplTest {
             UUID memberId = member.getId();
 
             // when
-            List<PaymentResult> payment = paymentRepository.findAllByMemberId(memberId);
+            List<Payment> payment = paymentRepository.findAllByMemberId(memberId);
 
             // then
             Assertions.assertTrue(payment.stream().anyMatch(paymentResult -> paymentResult.getMember().getId().equals(memberId)));
@@ -131,7 +131,7 @@ public class PaymentRepositoryImplTest {
             UUID memberId = UUID.randomUUID();
 
             // when
-            List<PaymentResult> payment = paymentRepository.findAllByMemberId(memberId);
+            List<Payment> payment = paymentRepository.findAllByMemberId(memberId);
 
             // then
             Assertions.assertEquals(payment.size(), 0L);
