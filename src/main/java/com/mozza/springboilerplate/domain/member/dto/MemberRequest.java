@@ -7,9 +7,11 @@ import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.shared.annotation.PhoneNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-@Getter
+@Data
+@Accessors(chain = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MemberRequest {
     @NotEmpty(message = "name is required")
