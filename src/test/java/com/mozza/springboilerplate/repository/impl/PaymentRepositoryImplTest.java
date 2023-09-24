@@ -8,10 +8,7 @@ import com.mozza.springboilerplate.domain.payment.dto.PaymentResult;
 import com.mozza.springboilerplate.domain.payment.entity.Payment;
 import com.mozza.springboilerplate.repository.MemberRepository;
 import com.mozza.springboilerplate.repository.PaymentRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -59,88 +56,112 @@ public class PaymentRepositoryImplTest {
         paymentRepository.deleteAll();
     }
 
-    @Test
-    public void shouldFindPaymentById() {
-        // given
-        UUID id = payment.getId();
+    @Nested
+    class FindPaymentById {
+        @Test
+        public void shouldFindPaymentById() {
+            // given
+            UUID id = payment.getId();
 
-        // when
-        PaymentResult payment = paymentRepository.findOneById(id);
+            // when
+            PaymentResult payment = paymentRepository.findOneById(id);
 
-        // then
-        Assertions.assertEquals(payment.getId(), id);
+            // then
+            Assertions.assertEquals(payment.getId(), id);
+        }
+
+        @Test
+        public void shouldNullPaymentById() {
+            // given
+            UUID id = UUID.randomUUID();
+
+            // when
+            PaymentResult payment = paymentRepository.findOneById(id);
+
+            // then
+            Assertions.assertNull(payment);
+        }
     }
 
-    @Test
-    public void shouldNotfoundPaymentById() {
-        // given
-        UUID id = UUID.randomUUID();
+    @Nested
+    class FindPaymentByCardNumberAndMemberId {
+        @Test
+        public void shouldFindPaymentByCardNumberAndMemberId() {
+            // given
+            String cardNumber = payment.getCardNumber();
 
-        // when
-        PaymentResult payment = paymentRepository.findOneById(id);
+            // when
+            Payment payment = paymentRepository.findOneByCardNumberAndMemberId(cardNumber, member.getId());
 
-        // then
-        Assertions.assertNull(payment);
+            // then
+            Assertions.assertEquals(payment.getCardNumber(), cardNumber);
+            Assertions.assertEquals(payment.getMember().getId(), member.getId());
+        }
+
+        @Test
+        public void shouldNullPaymentByCardNumberAndMemberId() {
+            // given
+            String cardNumber = "1234-1234-1234-1235";
+
+            // when
+            Payment payment = paymentRepository.findOneByCardNumberAndMemberId(cardNumber, member.getId());
+
+            // then
+            Assertions.assertNull(payment);
+        }
     }
 
-    @Test
-    public void shouldFindPaymentByCardNumberAndMemberId() {
-        // given
-        String cardNumber = this.payment.getCardNumber();
+    @Nested
+    class FindPaymentByMemberId {
+        @Test
+        public void shouldFindPaymentByMemberId() {
+            // given
+            UUID memberId = member.getId();
 
-        // when
-        Payment payment = paymentRepository.findOneByCardNumberAndMemberId(cardNumber, member.getId());
+            // when
+            List<PaymentResult> payment = paymentRepository.findAllByMemberId(memberId);
 
-        // then
-        Assertions.assertEquals(payment.getCardNumber(), cardNumber);
-        Assertions.assertEquals(payment.getMember().getId(), member.getId());
+            // then
+            Assertions.assertTrue(payment.stream().anyMatch(paymentResult -> paymentResult.getMember().getId().equals(memberId)));
+        }
+
+        @Test
+        public void shouldZeroPaymentByMemberId() {
+            // given
+            UUID memberId = UUID.randomUUID();
+
+            // when
+            List<PaymentResult> payment = paymentRepository.findAllByMemberId(memberId);
+
+            // then
+            Assertions.assertEquals(payment.size(), 0L);
+        }
     }
 
-    @Test
-    public void shouldFindPaymentByMemberId() {
-        // given
-        UUID memberId = member.getId();
+    @Nested
+    class CountPaymentByMemberId {
+        @Test
+        public void shouldCountPaymentByMemberId() {
+            // given
+            UUID memberId = member.getId();
 
-        // when
-        List<PaymentResult> payment = paymentRepository.findAllByMemberId(memberId);
+            // when
+            Long count = paymentRepository.countByMemberId(memberId);
 
-        // then
-        Assertions.assertTrue(payment.stream().anyMatch(paymentResult -> paymentResult.getMember().getId().equals(memberId)));
-    }
+            // then
+            Assertions.assertEquals(count, 1L);
+        }
 
-    @Test
-    public void shouldNotFindPaymentByMemberId() {
-        // given
-        UUID memberId = UUID.randomUUID();
+        @Test
+        public void shouldZeroPaymentByMemberId() {
+            // given
+            UUID memberId = UUID.randomUUID();
 
-        // when
-        List<PaymentResult> payment = paymentRepository.findAllByMemberId(memberId);
+            // when
+            Long count = paymentRepository.countByMemberId(memberId);
 
-        // then
-        Assertions.assertEquals(payment.size(), 0L);
-    }
-
-    @Test
-    public void shouldCountPaymentByMemberId() {
-        // given
-        UUID memberId = member.getId();
-
-        // when
-        Long count = paymentRepository.countByMemberId(memberId);
-
-        // then
-        Assertions.assertEquals(count, 1L);
-    }
-
-    @Test
-    public void shouldNotCountPaymentByMemberId() {
-        // given
-        UUID memberId = UUID.randomUUID();
-
-        // when
-        Long count = paymentRepository.countByMemberId(memberId);
-
-        // then
-        Assertions.assertEquals(count, 0L);
+            // then
+            Assertions.assertEquals(count, 0L);
+        }
     }
 }

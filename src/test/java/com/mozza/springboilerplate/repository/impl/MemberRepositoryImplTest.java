@@ -6,10 +6,7 @@ import com.mozza.springboilerplate.domain.member.dto.MemberCond;
 import com.mozza.springboilerplate.domain.member.dto.MemberResult;
 import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.repository.MemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -42,117 +39,126 @@ public class MemberRepositoryImplTest {
         memberRepository.deleteAll();
     }
 
-    @Test
-    public void shouldFindMemberByEmail() {
-        // given
-        String email = "example@dev.com";
+    @Nested
+    class FindOneByEmail {
+        @Test
+        public void shouldFindMemberByEmail() {
+            // given
+            String email = "example@dev.com";
 
-        // when
-        Member member = memberRepository.findOneByEmail(email);
+            // when
+            Member member = memberRepository.findOneByEmail(email);
 
-        // then
-        Assertions.assertEquals(member.getEmail(), email);
+            // then
+            Assertions.assertEquals(member.getEmail(), email);
+        }
+
+        @Test
+        public void shouldNullMemberByEmail() {
+            // given
+            String email = "test@dev.com";
+
+            // when
+            Member member = memberRepository.findOneByEmail(email);
+
+            // then
+            Assertions.assertNull(member);
+        }
     }
 
-    @Test
-    public void shouldNotFoundMemberByEmail() {
-        // given
-        String email = "test@dev.com";
+    @Nested
+    class FindOneById {
+        @Test
+        public void shouldFoundMemberById() {
+            // given
+            UUID id = member.getId();
 
-        // when
-        Member member = memberRepository.findOneByEmail(email);
+            // when
+            Member member = memberRepository.findOneById(id);
 
-        // then
-        Assertions.assertNull(member);
+            // then
+            Assertions.assertEquals(member.getId(), id);
+        }
+
+        @Test
+        public void shouldNullMemberById() {
+            // given
+            UUID id = UUID.randomUUID();
+
+            // when
+            Member member = memberRepository.findOneById(id);
+
+            // then
+            Assertions.assertNull(member);
+        }
     }
 
-    @Test
-    public void shouldFoundMemberById() {
-        // given
-        UUID id = this.member.getId();
+    @Nested
+    class FindOneByPhoneNumber {
+        @Test
+        public void shouldFindAllMembers() {
+            // given
+            MemberCond cond = new MemberCond();
 
-        // when
-        Member member = memberRepository.findOneById(id);
+            // when
+            Page<MemberResult> members = memberRepository.findAll(cond);
 
-        // then
-        Assertions.assertEquals(member.getId(), id);
-    }
+            // then
+            Assertions.assertEquals(members.getTotalElements(), 1);
+            Assertions.assertEquals(members.getTotalPages(), 1);
+        }
 
-    @Test
-    public void shouldNotFoundMemberById() {
-        // given
-        UUID id = UUID.randomUUID();
+        @Test
+        public void shouldFindMembersByEmail() {
+            // given
+            MemberCond cond = new MemberCond()
+                    .setEmail("example@dev.com");
 
-        // when
-        Member member = memberRepository.findOneById(id);
+            // when
+            Page<MemberResult> members = memberRepository.findAll(cond);
 
-        // then
-        Assertions.assertNull(member);
-    }
+            // then
+            Assertions.assertEquals(members.getTotalElements(), 1);
+        }
 
-    @Test
-    public void shouldFindAllMembers() {
-        // given
-        MemberCond cond = new MemberCond();
+        @Test
+        public void shouldFindMemberByPhoneNumber() {
+            // given
+            MemberCond cond = new MemberCond()
+                    .setPhoneNumber("000-0000-0000");
 
-        // when
-        Page<MemberResult> members = memberRepository.findAll(cond);
+            // when
+            Page<MemberResult> members = memberRepository.findAll(cond);
 
-        // then
-        Assertions.assertEquals(members.getTotalElements(), 1);
-        Assertions.assertEquals(members.getTotalPages(), 1);
-    }
+            // then
+            Assertions.assertEquals(members.getTotalElements(), 1);
+        }
 
-    @Test
-    public void shouldNotFoundMembers() {
-        // given
-        MemberCond cond = new MemberCond()
-                .setEmail("notUser@dev.com");
+        @Test
+        public void shouldFindMemberByName() {
+            // given
+            MemberCond cond = new MemberCond()
+                    .setName("test");
 
-        // when
-        Page<MemberResult> members = memberRepository.findAll(cond);
+            // when
+            Page<MemberResult> members = memberRepository.findAll(cond);
 
-        // then
-        Assertions.assertEquals(members.getTotalElements(), 0);
-        Assertions.assertTrue(members.isEmpty());
-    }
+            // then
+            Assertions.assertEquals(members.getTotalElements(), 1);
+        }
 
-    @Test
-    public void shouldFindMembersByEmail() {
-        // given
-        MemberCond cond = new MemberCond()
-                .setEmail("example@dev.com");
+        @Test
+        public void shouldNullMembers() {
+            // given
+            MemberCond cond = new MemberCond()
+                    .setEmail("notUser@dev.com");
 
-        // when
-        Page<MemberResult> members = memberRepository.findAll(cond);
+            // when
+            Page<MemberResult> members = memberRepository.findAll(cond);
 
-        // then
-        Assertions.assertEquals(members.getTotalElements(), 1);
-    }
-
-    @Test
-    public void shouldFindMemberByPhoneNumber() {
-        // given
-        MemberCond cond = new MemberCond()
-                .setPhoneNumber("000-0000-0000");
-
-        // when
-        Page<MemberResult> members = memberRepository.findAll(cond);
-
-        // then
-        Assertions.assertEquals(members.getTotalElements(), 1);
-    }
-
-    @Test
-    public void shouldFindMemberByName() {
-        // given
-        MemberCond cond = new MemberCond()
-                .setName("test");
-
-        // when
-        Page<MemberResult> members = memberRepository.findAll(cond);
-
-        // then
-        Assertions.assertEquals(members.getTotalElements(), 1);
+            // then
+            Assertions.assertEquals(members.getTotalElements(), 0);
+            Assertions.assertTrue(members.isEmpty());
+        }
     }
 }
