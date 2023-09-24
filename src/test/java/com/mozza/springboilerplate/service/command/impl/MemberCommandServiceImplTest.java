@@ -34,7 +34,7 @@ public class MemberCommandServiceImplTest {
     @MockBean
     private PaymentRepository paymentRepository;
 
-    MemberCommandServiceImpl memberCommandService;
+    private MemberCommandServiceImpl memberCommandService;
 
     @BeforeEach
     public void beforeEach() {

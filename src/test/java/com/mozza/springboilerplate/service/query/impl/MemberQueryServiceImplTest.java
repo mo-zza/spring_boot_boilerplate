@@ -37,7 +37,7 @@ public class MemberQueryServiceImplTest {
     @MockBean
     private PaymentRepository paymentRepository;
 
-    MemberQueryServiceImpl memberQueryService;
+    private MemberQueryServiceImpl memberQueryService;
 
     @BeforeEach
     public void beforeEach() {
