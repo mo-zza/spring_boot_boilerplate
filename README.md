@@ -24,6 +24,7 @@ a Dockerfile.
 | Name                             | Description                      | Default |
 |----------------------------------|----------------------------------|---------|
 | SERVER_PORT                      | application port                 | 8080    |
+| APPLICATION_VERSION              | application version              | 0.0.1   |
 | ACTIVE_PROFILE                   | spring active profile            | default |
 | DATABASE_URL                     | database url                     |         |
 | DATABASE_USERNAME                | database username                |         |
