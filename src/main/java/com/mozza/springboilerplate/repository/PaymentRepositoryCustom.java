@@ -8,11 +8,11 @@ import java.util.UUID;
 
 public interface PaymentRepositoryCustom {
 
-    PaymentResult findOneById(UUID id);
+    Payment findOneById(UUID id);
 
     Payment findOneByCardNumberAndMemberId(String cardNumber, UUID memberId);
 
-    List<PaymentResult> findAllByMemberId(UUID memberId);
+    List<Payment> findAllByMemberId(UUID memberId);
 
     Long countByMemberId(UUID memberId);
 }

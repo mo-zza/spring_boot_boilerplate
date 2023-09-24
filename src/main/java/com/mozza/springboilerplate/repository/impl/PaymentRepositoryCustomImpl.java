@@ -19,8 +19,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
     private final JPAQueryFactory query;
 
     @Override
-    public PaymentResult findOneById(UUID id) {
-        return getPaymentQueryWithDto()
+    public Payment findOneById(UUID id) {
+        return getPaymentQuery()
                 .where(payment.id.eq(id))
                 .fetchOne();
     }
@@ -33,8 +33,8 @@ public class PaymentRepositoryCustomImpl implements PaymentRepositoryCustom {
     }
 
     @Override
-    public List<PaymentResult> findAllByMemberId(UUID memberId) {
-        return getPaymentQueryWithDto()
+    public List<Payment> findAllByMemberId(UUID memberId) {
+        return getPaymentQuery()
                 .where(payment.member.id.eq(memberId))
                 .fetch();
     }
