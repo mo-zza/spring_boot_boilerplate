@@ -18,7 +18,7 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id", length = 36, nullable = false, updatable = false, unique = true)
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
     @CreatedDate
     @Column(updatable = false)

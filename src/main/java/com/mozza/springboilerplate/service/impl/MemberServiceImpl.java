@@ -28,12 +28,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberResponse getMemberById(UUID memberId) {
         MemberResult member = memberQueryService.getById(memberId);
+        if (Objects.isNull(member)) {
+            return null;
+        }
         return MemberResponse.fromResult(member);
     }
 
     @Override
     public PaymentsWithCountResponse getPaymentWithCountByMemberId(UUID memberId) {
         List<PaymentResult> payments = paymentQueryService.getAllByMemberId(memberId);
+        if (payments.isEmpty()) {
+            return PaymentsWithCountResponse.fromResultAndCount(payments, 0L);
+        }
         Long count = paymentQueryService.getCountByMemberId(memberId);
         return PaymentsWithCountResponse.fromResultAndCount(payments, count);
     }
