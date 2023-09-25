@@ -6,10 +6,12 @@ import com.mozza.springboilerplate.domain.member.entity.Member;
 import com.mozza.springboilerplate.domain.payment.constant.PaymentMethod;
 import com.mozza.springboilerplate.domain.payment.entity.Payment;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Getter
+@Data
+@Accessors(chain = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PaymentRequest {
     @NotNull

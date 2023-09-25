@@ -6,6 +6,7 @@ import com.mozza.springboilerplate.domain.member.exception.NotFoundMemberExcepti
 import com.mozza.springboilerplate.domain.member.exception.UnauthorizedPasswordException;
 import com.mozza.springboilerplate.domain.payment.dto.PaymentRequest;
 import com.mozza.springboilerplate.domain.payment.entity.Payment;
+import com.mozza.springboilerplate.domain.payment.exception.NotFoundPaymentException;
 import com.mozza.springboilerplate.repository.PaymentRepository;
 import com.mozza.springboilerplate.service.command.MemberCommandService;
 import com.mozza.springboilerplate.domain.member.dto.MemberRequest;
@@ -50,6 +51,10 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
     @Override
     public void deletePaymentById(UUID paymentId) {
+        Payment payment = paymentRepository.findOneById(paymentId);
+        if (Objects.isNull(payment)) {
+            throw new NotFoundPaymentException("존재하지 않는 결제수단입니다.");
+        }
         paymentRepository.deleteById(paymentId);
     }
 
