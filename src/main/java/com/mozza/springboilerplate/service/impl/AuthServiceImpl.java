@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public TokenResponse validateMember(SignInRequest param) {
         MemberResult member = memberQueryService.getByEmail(param.getEmail());
-        if (!member.getEmail().equals(param.getEmail())) {
+        if (Objects.isNull(member)) {
             throw new NotFoundMemberException("존재하지 않는 회원입니다.");
         }
 
