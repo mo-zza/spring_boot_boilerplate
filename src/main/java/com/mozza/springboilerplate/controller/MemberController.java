@@ -7,6 +7,7 @@ import com.mozza.springboilerplate.service.MemberService;
 import com.mozza.springboilerplate.util.Response;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,6 +50,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/payments/{paymentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePayment(
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable UUID paymentId

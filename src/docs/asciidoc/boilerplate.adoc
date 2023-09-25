@@ -1,0 +1,40 @@
+= Spring boot boilerplate docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels:2
+:sectlinks:
+
+[[introduction]]
+Spring boot boilerplate의 예시 API 문서입니다.
+
+== Get Member
+멤버의 정보를 가져오는 예시 API 입니다.
+
+=== Request
+include::{snippets}/get-member/http-request.adoc[]
+=== Headers
+Header에 Authorization은 필수입니다.
+include::{snippets}/get-member/request-headers.adoc[]
+=== Curl
+include::{snippets}/get-member/curl-request.adoc[]
+=== Response
+include::{snippets}/get-member/http-response.adoc[]
+=== Response Fields
+include::{snippets}/get-member/response-fields.adoc[]
+
+== Get Member Payments With Count
+멤버의 결제 수단을 가져오는 예시 API 입니다.
+
+=== Request
+include::{snippets}/get-member-payments-with-count/http-request.adoc[]
+=== Headers
+Header에 Authorization은 필수입니다.
+include::{snippets}/get-member-payments-with-count/request-headers.adoc[]
+=== Curl
+include::{snippets}/get-member-payments-with-count/curl-request.adoc[]
+=== Response
+include::{snippets}/get-member-payments-with-count/http-response.adoc[]
+=== Response Fields
+include::{snippets}/get-member-payments-with-count/response-fields.adoc[]
