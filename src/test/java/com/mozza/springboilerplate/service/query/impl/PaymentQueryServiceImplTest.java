@@ -66,9 +66,9 @@ public class PaymentQueryServiceImplTest {
                     .cardNumber("1234-1234-1234-1234")
                     .cardExpirationDate("12/34")
                     .build();
+            when(paymentRepository.findOneById(payment.getId())).thenReturn(payment);
 
             // when
-            when(paymentRepository.findOneById(payment.getId())).thenReturn(payment);
             PaymentResult paymentResult = paymentQueryService.getById(payment.getId());
 
             // then
@@ -105,9 +105,9 @@ public class PaymentQueryServiceImplTest {
                     .cardNumber("1234-1234-1234-1234")
                     .cardExpirationDate("12/34")
                     .build();
+            when(paymentRepository.findAllByMemberId(member.getId())).thenReturn(List.of(payment));
 
             // when
-            when(paymentRepository.findAllByMemberId(member.getId())).thenReturn(List.of(payment));
             List<PaymentResult> paymentResults = paymentQueryService.getAllByMemberId(member.getId());
 
             // then
@@ -137,9 +137,9 @@ public class PaymentQueryServiceImplTest {
                     .phoneNumber("000-0000-0000")
                     .password("test")
                     .build();
+            when(paymentRepository.countByMemberId(member.getId())).thenReturn(1L);
 
             // when
-            when(paymentRepository.countByMemberId(member.getId())).thenReturn(1L);
             Long count = paymentQueryService.getCountByMemberId(member.getId());
 
             // then
